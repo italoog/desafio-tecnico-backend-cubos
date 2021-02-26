@@ -1,7 +1,8 @@
 import { Router } from 'express';
+import rulesRouter from './rule.routes';
 
 const routes = Router();
 
-routes.get('/', (request, response) => response.json({ massage: 'Hello' }));
+routes.use('/rules', rulesRouter);
 
 export default routes;
