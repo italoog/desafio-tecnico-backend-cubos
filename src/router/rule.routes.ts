@@ -1,34 +1,36 @@
+/* eslint-disable @typescript-eslint/class-name-casing */
 import { Router } from 'express';
-import { v4 as uuid } from 'uuid';
-import fs from 'fs';
+
+import RulesRepository from '../repositories/RulesRepository';
+import CreateRuleService from '../services/CreateRuleService';
 
 const rulesRouter = Router();
+const rulesRepository = new RulesRepository();
 
-const rules = './src/database/db.json';
+rulesRouter.get('/', (request, response) => {
+  const rules = rulesRepository.all();
 
-fs.readFile(rules, 'utf8');
+  return response.json(rules);
+});
 
 rulesRouter.post('/', (request, response) => {
-  const { daily, weekly, day, daysWeek, intervals } = request.body;
+  try {
+    const { daily, weekly, day, daysWeek, intervals } = request.body;
 
-  // const FindRuleInSameDateAndTime = rules.find(rule => hourIsEqual(intervals[start], );
+    const createRule = new CreateRuleService(rulesRepository);
 
-  const hourIsEqual = (hourX: object, hourY: object): boolean => {
-    return hourX === hourY;
-  };
+    const rule = createRule.execute({
+      daily,
+      weekly,
+      day,
+      daysWeek,
+      intervals,
+    });
 
-  const rule = {
-    id: uuid(),
-    daily,
-    weekly,
-    day,
-    daysWeek,
-    intervals,
-  };
-
-  // rules.push(rule);
-
-  return response.json(rule);
+    return response.json(rule);
+  } catch (err) {
+    return response.status(400).json({ error: err.message });
+  }
 });
 
 export default rulesRouter;
