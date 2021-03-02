@@ -33,4 +33,12 @@ rulesRouter.post('/', (request, response) => {
   }
 });
 
+rulesRouter.delete('/:id', (request, response) => {
+  const { id } = request.params;
+
+  const rules = rulesRepository.all();
+
+  return response.json(rules);
+});
+
 export default rulesRouter;

@@ -1,7 +1,7 @@
 /* eslint-disable class-methods-use-this */
 import Rule from '../models/Rule';
 
-import { write, read } from '../database';
+import { writeRule, readRule } from '../database';
 
 interface IntervalsData {
   start: string;
@@ -21,7 +21,7 @@ interface CreateRuleDTO {
 
 class RulesRepository {
   public all(): Rule[] {
-    return read();
+    return readRule();
   }
 
   // public findByDay(day: string): Rule | null {
@@ -39,7 +39,7 @@ class RulesRepository {
   }: CreateRuleDTO): Rule {
     const rule = new Rule({ daily, weekly, day, daysWeek, intervals });
 
-    write(rule);
+    writeRule(rule);
 
     return rule;
   }
