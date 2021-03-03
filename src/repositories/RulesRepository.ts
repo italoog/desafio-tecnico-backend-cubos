@@ -1,7 +1,7 @@
 /* eslint-disable class-methods-use-this */
 import Rule from '../models/Rule';
 
-import { writeRule, readRule } from '../database';
+import { writeRule, readRule, deleteRule } from '../database';
 
 interface IntervalsData {
   start: string;
@@ -42,6 +42,10 @@ class RulesRepository {
     writeRule(rule);
 
     return rule;
+  }
+
+  public delete(id: string): boolean {
+    return deleteRule(id);
   }
 }
 

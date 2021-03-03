@@ -15,10 +15,16 @@ export const writeRule = (content: any): void => {
   fs.writeFileSync(db, update, 'utf-8');
 };
 
-export const deleteRule = (id: string): void => {
+export const deleteRule = (id: string): true | false => {
   const correntContent = readRule();
   const selectedItem = correntContent.findIndex((item: any) => item.id === id);
+  if (selectedItem === -1) {
+    return false;
+  }
   correntContent.splice(selectedItem, 1);
+  const update = JSON.stringify(correntContent);
+  fs.writeFileSync(db, update, 'utf-8');
+  return true;
 };
 
 export const findRule = (day: any): any => {

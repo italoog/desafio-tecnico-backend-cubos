@@ -3,6 +3,7 @@ import { Router } from 'express';
 
 import RulesRepository from '../repositories/RulesRepository';
 import CreateRuleService from '../services/CreateRuleService';
+import DeleteRuleService from '../services/DeleteRuleServise';
 
 const rulesRouter = Router();
 const rulesRepository = new RulesRepository();
@@ -34,11 +35,17 @@ rulesRouter.post('/', (request, response) => {
 });
 
 rulesRouter.delete('/:id', (request, response) => {
-  const { id } = request.params;
+  try {
+    const { id } = request.params;
 
-  const rules = rulesRepository.all();
+    const deleteRule = new DeleteRuleService(rulesRepository);
 
-  return response.json(rules);
+    deleteRule.execute({ id });
+
+    return response.send();
+  } catch (err) {
+    return response.status(400).json({ error: err.message });
+  }
 });
 
 export default rulesRouter;
