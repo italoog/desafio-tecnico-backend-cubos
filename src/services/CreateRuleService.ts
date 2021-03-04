@@ -1,3 +1,4 @@
+import { parse } from 'date-fns';
 import Rule from '../models/Rule';
 
 import RulesRepository from '../repositories/RulesRepository';
@@ -52,6 +53,8 @@ class CreateRuleService {
     if (!daily && !weekly && !day) {
       throw Error('Invalid rule. A type of rule must be informed.');
     }
+
+    console.log(parse('23 AM', 'HH a', new Date()));
 
     const rule = this.rulesRepository.create({
       daily,
